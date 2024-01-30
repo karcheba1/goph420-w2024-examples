@@ -30,5 +30,12 @@ class TestExp1(unittest.TestCase):
         self.assertIsInstance(exp(self.x), float)
 
 
+class TestExpInvalidInput(unittest.TestCase):
+
+    def test_invalid_string_input(self):
+        with self.assertRaises(ValueError):
+            exp("one")
+
+
 if __name__ == "__main__":
     unittest.main()
