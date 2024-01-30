@@ -17,5 +17,18 @@ class TestExp0(unittest.TestCase):
         self.assertIsInstance(exp(self.x), float)
 
 
+class TestExp1(unittest.TestCase):
+    def setUp(self):
+        self.x = 1.0
+
+    def test_value(self):
+        expected = 2.7182818284590452353602874713526624977572
+        self.assertAlmostEqual(exp(self.x), expected,
+                               delta=1e-15)
+
+    def test_type(self):
+        self.assertIsInstance(exp(self.x), float)
+
+
 if __name__ == "__main__":
     unittest.main()
