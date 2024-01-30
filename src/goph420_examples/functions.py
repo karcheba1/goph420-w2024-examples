@@ -1,5 +1,5 @@
 def exp(x):
-   """Compute values of the exponential function
+    """Compute values of the exponential function
     for real-valued arguments.
 
     Inputs
@@ -23,7 +23,7 @@ def exp(x):
     tol = 1.0e-16
     eps_a = 1.0
     while eps_a > tol:
-       term = (x ** n) / fact_n
+        term = (x ** n) / fact_n
         result += term
         n += 1
         fact_n *= n
