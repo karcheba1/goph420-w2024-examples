@@ -1,5 +1,6 @@
 def exp(x):
 <<<<<<< HEAD
+<<<<<<< HEAD
     """Compute values of the exponential function"
     for real -valued arguments.
 
@@ -31,6 +32,9 @@ def exp(x):
         fact_n *= n 
 =======
    """Compute values of the exponential function
+=======
+    """Compute values of the exponential function
+>>>>>>> 1328944efda341f67151d61ca5339f8d7b88078e
     for real-valued arguments.
 
     Inputs
@@ -54,7 +58,7 @@ def exp(x):
     tol = 1.0e-16
     eps_a = 1.0
     while eps_a > tol:
-       term = (x ** n) / fact_n
+        term = (x ** n) / fact_n
         result += term
         n += 1
         fact_n *= n
