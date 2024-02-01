@@ -1,3 +1,5 @@
+import numpy as np
+
 def shape (s, order=1):
     """Compute Lagrange interpolating polynomial 
     shape functions of various order.
@@ -24,3 +26,5 @@ def shape (s, order=1):
     s = float(s)
     if order not in [1]:
         raise ValueError(f"order {order} is not valid")
+
+    return np.array([[(1.0-s), s]])
