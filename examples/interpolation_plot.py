@@ -11,12 +11,12 @@ def main():
     y = np.exp(x)
     xi = []
     yi = []
-    for i in range(len(x)-1):
+    s = np.linspace(0, 1, 5)
+    for i, _ in enumerate(x[:-1]):
         xd = x[i:i+2]
         yd = y[i:i+2]
-        s = np.linspace(0, 1, 5)
-        for j in range(len(s)):
-            N = shape(s[j])
+        for sj in s:
+            N = shape(sj)
             x_i = N @ xd
             y_i = N @ yd
             xi.append(x_i)
@@ -24,6 +24,9 @@ def main():
 
     plt.plot(x, y, 'ok', label='data')
     plt.plot(xi, yi, '--r', label='shape')
+    plt.xlabel('x')
+    plt.ylabel('y = exp(x)')
+    plt.legend()
 
     # plt.show()
     plt.savefig('examples/interpolation_plot.png')
