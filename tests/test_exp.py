@@ -17,6 +17,7 @@ class TestExp0(unittest.TestCase):
         self.assertIsInstance(exp(self.x), float)
 
 
+<<<<<<< HEAD
 class TestExp1(unittest.TestCase):
     def setUp(self):
         self.x = 1.0
@@ -37,5 +38,7 @@ class TestExpInvalidInput(unittest.TestCase):
             exp("one")
 
 
+=======
+>>>>>>> fd42145 (implemented exp function and unit test for x=0)
 if __name__ == "__main__":
     unittest.main()
