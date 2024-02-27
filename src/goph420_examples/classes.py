@@ -35,3 +35,22 @@ class Node:
 
     def __init__(self):
         pass
+
+
+
+
+
+class temp:
+    _T: float
+
+    def __init__(self, T:float): 
+        self.T = 0.0  
+
+    @property 
+    def T(self):
+        return self._T
+
+    @T.setter 
+    def T(self, T: float):
+        T = float(T)
+        self._T = T 
