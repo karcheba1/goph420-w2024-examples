@@ -43,8 +43,8 @@ class Node:
 class temp:
     _T: float
 
-    def __init__(self, T:float): 
-        self.T = 0.0  
+    def __init__(self, T=0:float): 
+        self.T = T  
 
     @property 
     def T(self):
