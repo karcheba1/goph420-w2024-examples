@@ -5,7 +5,11 @@ def exp(x):
     Inputs
     ------
     x : float
+<<<<<<< HEAD
         The argument to the exponential function
+=======
+        The argument to the exponential function.
+>>>>>>> fd42145 (implemented exp function and unit test for x=0)
 
     Returns
     -------
@@ -14,7 +18,7 @@ def exp(x):
     Raises
     ------
     ValueError
-        If x cannot be converted to float
+        If x cannot be converted to float.
     """
     x = float(x)
     n = 0
