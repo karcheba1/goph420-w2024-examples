@@ -40,14 +40,6 @@ class Node:
     def index(self):
         return self._index
     
-    def get_index(self):
-        return self._index
-
-        pass
-
-
-
-
 
 class temp:
     _T: float
