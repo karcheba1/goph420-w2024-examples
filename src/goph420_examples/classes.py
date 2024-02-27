@@ -32,6 +32,15 @@ class Node:
         The temperature at the node.
 
     """
+    _x: float
 
-    def __init__(self):
-        pass
+    def __init__(self, x: float):
+        self.x = x 
+
+    @property
+    def x(self):
+        x = float(x)
+        return self._x
+
+    def length(self):
+        return np.abs(self.x)
