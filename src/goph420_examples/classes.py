@@ -36,23 +36,20 @@ class Node:
     _x: float
     _index: int
 
-    def __init__(self, x:float):
-        self.x = x
-        (self, index: int):
+    def __init__(self, x:float, temp:float=0, index:int):
         self.index = index
-        (self, temp:float=0): 
         self.temp = temp  
+        self.x = x
 
     @property
     def x(self):
         return self._x
+    @property
     def index(self):
         return self._index
+    @property
     def temp(self):
         return self._temp
-    
-    def get_index(self):
-        return self._index
 
     @temp.setter 
     def temp(self, temp: float):
