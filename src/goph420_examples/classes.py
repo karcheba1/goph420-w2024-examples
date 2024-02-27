@@ -33,5 +33,14 @@ class Node:
 
     """
 
-    def __init__(self):
+    def __init__(self, index: int):
+        self.index = index
+
+    @property
+    def index(self):
+        return self._index
+    
+    def get_index(self):
+        return self._index
+
         pass
