@@ -34,12 +34,16 @@ class Node:
     """
     _temp: float
     _x: float
+    _index: int
 
-    def __init__(self, x:float, temp:float=0,index: int):
+    def __init__(self, x:float,index:int, temp:float=0):
         self.index = index
         self.temp = temp  
         self.x = x
 
+    @property
+    def index(self):
+        return self._index
     @property
     def x(self):
         return self._x
