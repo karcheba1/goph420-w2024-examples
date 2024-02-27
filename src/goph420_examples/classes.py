@@ -32,34 +32,24 @@ class Node:
         The temperature at the node.
 
     """
+    _temp: float
 
     def __init__(self, index: int):
         self.index = index
+    def __init__(self, temp=0:float): 
+        self.temp = temp  
 
     @property
     def index(self):
         return self._index
+    def temp(self):
+        return self._temp
     
     def get_index(self):
         return self._index
 
+    @temp.setter 
+    def temp(self, temp: float):
+        temp = float(temp)
+        self._temp = temp 
         pass
-
-
-
-
-
-class temp:
-    _T: float
-
-    def __init__(self, T=0:float): 
-        self.T = T  
-
-    @property 
-    def T(self):
-        return self._T
-
-    @T.setter 
-    def T(self, T: float):
-        T = float(T)
-        self._T = T 
