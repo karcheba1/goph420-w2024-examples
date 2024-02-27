@@ -18,3 +18,20 @@ class Point:
 
     def length(self):
         return np.sqrt(self.x ** 2)
+
+
+class Node:
+    """Store solution variable information.
+
+    Attributes:
+    index : int
+        The global index of the node.
+    x : float
+        The position of the node.
+    temp: float
+        The temperature at the node.
+
+    """
+
+    def __init__(self):
+        pass
