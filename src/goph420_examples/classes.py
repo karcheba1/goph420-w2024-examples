@@ -36,10 +36,22 @@ class Node:
     _x: float
     _index: int
 
-    def __init__(self, x: float, temp: float = 0, index: int):
-        self.index = index
+    def __init__(
+        self,
+        index: int,
+        x: float,
+        temp: float = 0.0,
+    ):
+        if not isinstance(index, int):
+            raise TypeError(f"type of index {type(index)} is not int")
+        if index < 0:
+            raise ValueError(f"value of index {index} is negative")
+        self._index = index
+
+        x = float(x)
+        self._x = x
+
         self.temp = temp
-        self.x = x
 
     @property
     def index(self):
