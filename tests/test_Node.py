@@ -36,15 +36,15 @@ class TestNodeValidInitializer(unittest.TestCase):
 class TestNodeInvalidInitializers(unittest.TestCase):
 
     def test_no_index(self):
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             Node(x=1.0)
 
     def test_invalid_index(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             Node(index="one", x=1.0)
 
     def test_no_position(self):
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             Node(index=1)
 
     def test_invalid_position(self):
