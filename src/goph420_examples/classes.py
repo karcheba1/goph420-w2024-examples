@@ -50,10 +50,6 @@ class Node:
         return self._x
 
     @property
-    def index(self):
-        return self._index
-
-    @property
     def temp(self):
         return self._temp
 
