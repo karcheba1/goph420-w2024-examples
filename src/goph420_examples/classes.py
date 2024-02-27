@@ -34,13 +34,13 @@ class Node:
     """
     _temp: float
     _x: float
+    _index: int
 
     def __init__(self, x:float):
         self.x = x
-
-    def __init__(self, index: int):
+        (self, index: int):
         self.index = index
-    def __init__(self, temp=0:float): 
+        (self, temp:float=0): 
         self.temp = temp  
 
     @property
@@ -58,4 +58,3 @@ class Node:
     def temp(self, temp: float):
         temp = float(temp)
         self._temp = temp 
-        pass
