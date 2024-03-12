@@ -169,7 +169,8 @@ class Element:
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+        return((ρ*c*l/6)*np.array([[2,1],[1,2]]))
+
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
