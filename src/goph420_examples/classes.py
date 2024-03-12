@@ -148,16 +148,16 @@ class Element:
     def __init__(self, nodes: tuple[Node], order: int, flux_vector: npt.NDArray[np.floating]):
         self.flux_vector = np.array(flux_vector)
         self.order = order
-        self.nodes = nodes
+        self.nodes = tuple(nodes)
 
     @property
     def order(self) -> int:
-        self.order = 1 
-    
+        self.order = 1
+
     @property
     def num_nodes(self) -> int:
         self.num_nodes = len(self.nodes)
-    
+
     @property
     def nodes(self) -> tuple[Node]:
         pass
