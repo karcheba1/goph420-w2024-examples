@@ -143,9 +143,10 @@ class Element:
         If order < 0.
         If len(nodes) is not consistent with order.
     """
+    _flux_vector: npt.NDArray[np.floating]
 
-    def __init__(self, nodes: tuple[Node], order: int):
-        pass
+    def __init__(self, nodes: tuple[Node], order: int, flux_vector: npt.NDArray[np.floating]):
+        self.flux_vector = np.array(flux_vector)
 
     @property
     def order(self) -> int:
@@ -173,4 +174,6 @@ class Element:
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
-        pass
+        flux_vector = [[1],[1]]
+        self._flux_vector = flux_vector
+        return self._flux_vector
