@@ -145,8 +145,7 @@ class Element:
     """
     _flux_vector: npt.NDArray[np.floating]
 
-    def __init__(self, nodes: tuple[Node], order: int, flux_vector: npt.NDArray[np.floating]):
-        self.flux_vector = np.array(flux_vector)
+    def __init__(self, nodes: tuple[Node], order: int):
         self.order = order
         self.nodes = tuple(nodes)
 
@@ -172,7 +171,7 @@ class Element:
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+        return ((ρ*c*l/6)*np.array([[2, 1], [1, 2]]))
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
