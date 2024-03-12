@@ -24,6 +24,7 @@ class Node:
     """Store solution variable information.
 
     Attributes:
+    -----------
     index : int
         The global index of the node.
     x : float
