@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.typing as npt
 
 
 class Point:
@@ -23,18 +24,32 @@ class Point:
 class Node:
     """Store solution variable information.
 
-    Attributes:
+    Attributes
+    ----------
+    index
+    x
+    temp
+
+    Parameters
+    ----------
     index : int
         The global index of the node.
     x : float
         The position of the node.
-    temp: float
+    temp: float, optional, default=0.0
         The temperature at the node.
 
+    Raises
+    ------
+    TypeError
+        If index is not an int.
+    ValueError
+        If index is < 0.
+        If x cannot be converted to float.
     """
-    _temp: float
-    _x: float
     _index: int
+    _x: float
+    _temp: float
 
     def __init__(
         self,
@@ -54,18 +69,108 @@ class Node:
         self.temp = temp
 
     @property
-    def index(self):
+    def index(self) -> int:
+        """The global index of the node.
+
+        Returns
+        -------
+        int
+        """
         return self._index
 
     @property
-    def x(self):
+    def x(self) -> float:
+        """The position of the node.
+
+        Returns
+        -------
+        float
+        """
         return self._x
 
     @property
     def temp(self):
+        """The temperature of the node.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+        """
         return self._temp
 
     @temp.setter
     def temp(self, temp: float):
         temp = float(temp)
         self._temp = temp
+
+
+class Element:
+    """Class for grouping Nodes
+    and computing element matrices and vectors.
+
+    Attributes
+    ----------
+    order
+    num_nodes
+    nodes
+    jacobian
+    conduction_matrix
+    storage_matrix
+    flux_vector
+
+    Parameters
+    ----------
+    nodes : tuple[Node]
+        The nodes contained in the element.
+    order : int
+        The order of interpolation.
+
+    Raises
+    ------
+    TypeError
+        If objects in nodes are not of class Node.
+        If order is not an int.
+    ValueError
+        If order < 0.
+        If len(nodes) is not consistent with order.
+    """
+
+    def __init__(self, nodes: tuple[Node], order: int):
+        pass
+
+    @property
+    def order(self) -> int:
+        pass
+
+    @property
+    def num_nodes(self) -> int:
+        pass
+
+    @property
+    def nodes(self) -> tuple[Node]:
+        pass
+
+    @property
+    def jacobian(self) -> float:
+        pass
+
+    @property
+    def conduction_matrix(self) -> npt.NDArray[np.floating]:
+        pass
+
+    @property
+    def storage_matrix(self) -> npt.NDArray[np.floating]:
+        pass
+
+    @property
+    def flux_vector(self) -> npt.NDArray[np.floating]:
+        pass
