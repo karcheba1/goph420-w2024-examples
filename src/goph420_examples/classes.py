@@ -164,6 +164,7 @@ class Element:
 
     @property
     def jacobian(self) -> float:
+        self._jacobian = self._nodes[1] - self._nodes[0]
         pass
 
     @property
