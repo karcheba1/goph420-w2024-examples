@@ -172,7 +172,7 @@ class Element:
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
-        return((ρ*c*l/6)*np.array([[2,1],[1,2]]))
+        return((rho*c*self.jacobian/6)*np.array([[2,1],[1,2]]))
 
 
     @property
