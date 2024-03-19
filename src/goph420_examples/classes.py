@@ -145,16 +145,17 @@ class Element:
     """
 
     def __init__(self, nodes: tuple[Node], order: int):
-        self.order = order
-        self.nodes = tuple(nodes)
+        self._order = order
+        self._nodes = tuple(nodes)
 
     @property
     def order(self) -> int:
-        pass
+        return self._order
 
     @property
     def num_nodes(self) -> int:
-        pass
+        self._num_nodes = len(self._nodes)
+        return self._num_nodes
 
     @property
     def nodes(self) -> tuple[Node]:
@@ -162,16 +163,16 @@ class Element:
 
     @property
     def jacobian(self) -> float:
-        pass
+        self._jacobian = self._nodes[1] - self._nodes[0]
+        return self._jacobian
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
         pass
 
     @property
-    def storage_matrix(self, jacobian) -> npt.NDArray[np.floating]:
-        le=jacobian(self)
-        coeff=(rho*cp*le)/6
+    def storage_matrix(self) -> npt.NDArray[np.floating]:
+        coeff=(rho*cp*self.jacobian)/6
         NtN=np.array([[2,1],[1,2]])
         return coeff @ NtN
 
