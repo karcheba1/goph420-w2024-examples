@@ -641,8 +641,8 @@ class Element:
         lam = self.int_pts[0].thrm_cond
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        return (h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) 
-                + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]]))
+        return (h * (P/A) * self.jacobian * (1/6) * np.array([[2, 1], [1, 2]])
+                + lam * (1/self.jacobian) * np.array([[1, -1], [-1, 1]]))
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
