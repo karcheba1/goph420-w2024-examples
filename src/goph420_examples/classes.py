@@ -140,6 +140,12 @@ class IntegrationPoint:
         the parent element.
     weight : float
         The weight for Gauss integration within the parent element.
+    perimeter : float
+        Perimeter of the element.
+    area : float
+        Area of the element.
+    temp_inf
+        Ambient temperature around the element.
     x : float
         The position of the integration point.
     temp: float, optional, default=0.0
@@ -674,5 +680,5 @@ class Element:
         h = self.int_pts[0].heat_trans_coef
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        T_inf = self.int_pts[0].temp_infinity
+        T_inf = self.int_pts[0].temp_inf
         return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
