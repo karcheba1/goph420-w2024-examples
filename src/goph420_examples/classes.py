@@ -175,6 +175,8 @@ class IntegrationPoint:
 
     def __init__(
         self,
+        local_coord: float,
+        weight: float,
         x: float,
         temp: float = 0.0,
         density: float = 0.0,
@@ -184,7 +186,6 @@ class IntegrationPoint:
     ):
         x = float(x)
         local_coord = float(local_coord)
-        weight = float(weight)
         self._x = x
         self._local_coord = local_coord
 
@@ -198,6 +199,15 @@ class IntegrationPoint:
     @property
     def local_coord(self) -> float:
         return self._local_coord
+
+    @property
+    def weight(self) -> float:
+        return self._weight
+
+    @weight.setter
+    def weight(self, weight: float) -> float:
+        weight = float(weight)
+        self._weight = weight
 
     @property
     def x(self) -> float:
@@ -446,7 +456,7 @@ class Element:
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
         rho = self.int_pts[0].density
-        return h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]])
+        return h * (P/A) * self.jacobian * (1/6) * np.array([[2, 1], [1, 2]]) + lam * (1/self.jacobian) * np.array([[1, -1], [-1, 1]])
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
