@@ -145,7 +145,8 @@ class Element:
     """
 
     def __init__(self, nodes: tuple[Node], order: int):
-        pass
+        self.order = order
+        self.nodes = tuple(nodes)
 
     @property
     def order(self) -> int:
@@ -168,8 +169,11 @@ class Element:
         pass
 
     @property
-    def storage_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+    def storage_matrix(self, jacobian) -> npt.NDArray[np.floating]:
+        le=jacobian(self)
+        coeff=(rho*cp*le)/6
+        NtN=np.array([[2,1],[1,2]])
+        return coeff @ NtN
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
