@@ -151,11 +151,14 @@ class Element:
 
     @property
     def order(self) -> int:
-        self.order = 1
+        self._order = 1
+        return self._order
+
 
     @property
     def num_nodes(self) -> int:
         self._num_nodes = len(self._nodes)
+        return(self._num_nodes)
 
     @property
     def nodes(self) -> tuple[Node]:
@@ -164,7 +167,7 @@ class Element:
     @property
     def jacobian(self) -> float:
         self._jacobian = self._nodes[1] - self._nodes[0]
-        pass
+        return self._jacobian
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
