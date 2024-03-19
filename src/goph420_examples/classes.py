@@ -277,8 +277,7 @@ class Element:
 
     @property
     def jacobian(self) -> float:
-        self._jacobian = self.nodes[1] - self.nodes[0]
-        return self._jacobian
+        return self.nodes[-1] - self.nodes[0]
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
@@ -292,15 +291,3 @@ class Element:
     def flux_vector(self) -> npt.NDArray[np.floating]:
         flux_vector = 0.5 * np.array([[1], [1]])
         return self._flux_vector
-
-    @property
-    def heat_transfer_coeff(self):
-        pass
-
-    @property
-    def t_infinity(self):
-        pass
-
-    @property
-    def perimeter_area(self):
-        pass
