@@ -168,18 +168,34 @@ class IntegrationPoint:
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
     """
-    _x: float
-    _temp: float
 
-    def __init__(
-        self,
-        x: float,
-        temp: float = 0.0,
-    ):
+    def __init__(self,
+                 local_coord: float,
+                 weight: float,
+                 x: float,
+                 temp: float = 0.0,
+                 density: float = 0.0,
+                 thrm_cond: float = 0.0,
+                 spec_heat_cap: float = 0.0,
+                 heat_trans_coef: float = 0.0,
+                 ):
+
         x = float(x)
+        local_coord = float(local_coord)
+        weight = float(weight)
         self._x = x
+        self._local_coord = local_coord
 
         self.temp = temp
+        self.weight = weight
+        self.density = density
+        self.thrm_cond = thrm_cond
+        self.spec_heat_cap = spec_heat_cap
+        self.heat_trans_coef = heat_trans_coef
+
+    @property
+    def local_coord(self) -> float:
+        return self._local_coord
 
     @property
     def x(self) -> float:
@@ -192,7 +208,7 @@ class IntegrationPoint:
         return self._x
 
     @property
-    def temp(self):
+    def temp(self) -> float:
         """The temperature of the integration point.
 
         Parameters
@@ -214,6 +230,64 @@ class IntegrationPoint:
     def temp(self, temp: float):
         temp = float(temp)
         self._temp = temp
+
+    @property
+    def density(self) -> float:
+        return self.density
+
+    @density.setter
+    def density(self, density: float):
+        density = float(density)
+        if density < 0:
+            raise ValueError(f"Value of density {density} is negative")
+        self.density = density
+
+    @property
+    def weight(self) -> float:
+        return self.weight
+
+    @weight.setter
+    def weight(self, weight: float):
+        weight = float(weight)
+        if weight < 0:
+            raise ValueError(f"Value of weight {weight} is negative")
+        self.weight = weight
+
+    @property
+    def thrm_cond(self) -> float:
+        return self.thrm_cond
+
+    @thrm_cond.setter
+    def thrm_cond(self, thrm_cond: float):
+        thrm_cond = float(thrm_cond)
+        if thrm_cond < 0:
+            raise ValueError(f"Value of thermal conductivity {
+                             thrm_cond} is negative")
+        self.thrm_cond = thrm_cond
+
+    @property
+    def spec_heat_cap(self) -> float:
+        return self.spec_heat_cap
+
+    @spec_heat_cap.setter
+    def spec_heat_cap(self, spec_heat_cap: float):
+        spec_heat_cap = float(spec_heat_cap)
+        if spec_heat_cap < 0:
+            raise ValueError(f"Value of specific heat capacity {
+                             spec_heat_cap} is negative")
+        self.spec_heat_cap = spec_heat_cap
+
+    @property
+    def heat_trans_coef(self) -> float:
+        return self.heat_trans_coef
+
+    @heat_trans_coef.setter
+    def heat_trans_coef(self, heat_trans_coef: float):
+        heat_trans_coef = float(heat_trans_coef)
+        if heat_trans_coef < 0:
+            raise ValueError(f"Value of heat transfer coefficient {
+                             heat_trans_coef} is negative")
+        self.heat_trans_coef = heat_trans_coef
 
 
 class Element:
