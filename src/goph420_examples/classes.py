@@ -251,8 +251,8 @@ class IntegrationPoint:
     @density.setter
     def density(self, density: float):
         density = float(density)
-        if density <0: 
-            Raises ValueError
+        if density < 0.0:
+            raise ValueError("density cannot be negative")
         self._density = density
 
     @property
@@ -278,7 +278,7 @@ class IntegrationPoint:
     @thrm_cond.setter
     def thrm_cond(self, thrm_cond: float):
         thrm_cond = float(thrm_cond)
-        if thrm_cond <0: 
+        if thrm_cond < 0:
             Raises ValueError
         self._thrm_cond = thrm_cond
 
@@ -305,7 +305,7 @@ class IntegrationPoint:
     @spec_heat_cap.setter
     def spec_heat_cap(self, spec_heat_cap: float):
         spec_heat_cap = float(spec_heat_cap)
-        if spec_heat_cap <0: 
+        if spec_heat_cap < 0:
             Raises ValueError
         self._spec_heat_cap = spec_heat_cap
 
@@ -332,9 +332,10 @@ class IntegrationPoint:
     @heat_trans_coef.setter
     def heat_trans_coef(self, heat_trans_coef: float):
         heat_trans_coef = float(heat_trans_coef)
-        if heat_trans_coef <0: 
+        if heat_trans_coef < 0:
             Raises ValueError
         self._heat_trans_coef = heat_trans_coef
+
 
 class Element:
     """Class for grouping Nodes
