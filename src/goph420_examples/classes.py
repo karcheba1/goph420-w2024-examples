@@ -207,6 +207,7 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative
         """
         return self._temp
 
@@ -215,6 +216,113 @@ class IntegrationPoint:
         temp = float(temp)
         self._temp = temp
 
+    @property
+    def density(self):
+        """The density of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._density
+
+    @density.setter
+    def density(self, density: float):
+        density = float(density)
+        if density <0: 
+            Raises ValueError
+        self._density = density
+
+    @property
+    def thrm_cond(self):
+        """The thrm_cond of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._thrm_cond
+
+    @thrm_cond.setter
+    def thrm_cond(self, thrm_cond: float):
+        thrm_cond = float(thrm_cond)
+        if thrm_cond <0: 
+            Raises ValueError
+        self._thrm_cond = thrm_cond
+
+    @property
+    def spec_heat_cap(self):
+        """The spec_heat_cap of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._spec_heat_cap
+
+    @spec_heat_cap.setter
+    def spec_heat_cap(self, spec_heat_cap: float):
+        spec_heat_cap = float(spec_heat_cap)
+        if spec_heat_cap <0: 
+            Raises ValueError
+        self._spec_heat_cap = spec_heat_cap
+
+    @property
+    def heat_trans_coef(self):
+        """The heat_trans_coef of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._heat_trans_coef
+
+    @heat_trans_coef.setter
+    def heat_trans_coef(self, heat_trans_coef: float):
+        heat_trans_coef = float(heat_trans_coef)
+        if heat_trans_coef <0: 
+            Raises ValueError
+        self._heat_trans_coef = heat_trans_coef
 
 class Element:
     """Class for grouping Nodes
