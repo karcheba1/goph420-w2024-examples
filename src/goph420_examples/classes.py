@@ -277,7 +277,7 @@ class Element:
 
     @property
     def jacobian(self) -> float:
-        self._jacobian = self.nodes[1] - self.nodes[0]
+        self._jacobian = self.nodes[-1] - self.nodes[0]
         return self._jacobian
 
     @property
