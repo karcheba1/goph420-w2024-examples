@@ -314,15 +314,3 @@ class Element:
     def flux_vector(self) -> npt.NDArray[np.floating]:
         flux_vector = 0.5 * np.array([[1], [1]])
         return self._flux_vector
-
-    @property
-    def heat_transfer_coeff(self):
-        pass
-
-    @property
-    def t_infinity(self):
-        pass
-
-    @property
-    def perimeter_area(self):
-        pass
