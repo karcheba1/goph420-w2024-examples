@@ -436,8 +436,8 @@ class Element:
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
         h = self.int_pts[0].heat_trans_coef
         lam = self.int_pts[0].thrm_cond
-        P = 
-        A = 
+        P = self.int_pts[0].perimeter
+        A = self.int_pts[0].area
         rho = self.int_pts[0].density
         return h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]])
 
@@ -450,7 +450,7 @@ class Element:
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
         h = self.int_pts[0].heat_trans_coef
-        P = 
-        A = 
-        T_inf = 
+        P = self.int_pts[0].perimeter
+        A = self.int_pts[0].area
+        T_inf = self.int_pts[0].T_infinity
         return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
