@@ -172,8 +172,6 @@ class IntegrationPoint:
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
     """
-    _x: float
-    _temp: float
 
     def __init__(
         self,
@@ -185,13 +183,21 @@ class IntegrationPoint:
         heat_trans_coef: float = 0.0,
     ):
         x = float(x)
+        local_coord = float(local_coord)
+        weight = float(weight)
         self._x = x
+        self._local_coord = local_coord
 
         self.temp = temp
+        self.weight = weight
         self.density = density
         self.thrm_cond = thrm_cond
         self.spec_heat_cap = spec_heat_cap
         self.heat_trans_coef = heat_trans_coef
+
+    @property
+    def local_coord(self) -> float:
+        return self._local_coord
 
     @property
     def x(self) -> float:
@@ -332,9 +338,10 @@ class IntegrationPoint:
     @heat_trans_coef.setter
     def heat_trans_coef(self, heat_trans_coef: float):
         heat_trans_coef = float(heat_trans_coef)
-        if heat_trans_coef < 0.0:
-            raise ValueError("heat_trans_coef cannot be negative")
-        self._heat_trans_coef = heat_trans_coef
+        if heat_trans_coef < 0:
+            raise ValueError(f"Value of heat transfer coefficient {
+                             heat_trans_coef} is negative")
+        self.heat_trans_coef = heat_trans_coef
 
 
 class Element:
