@@ -140,12 +140,6 @@ class IntegrationPoint:
         the parent element.
     weight : float
         The weight for Gauss integration within the parent element.
-    perimeter : float
-        Perimeter of the element.
-    area : float
-        Area of the element.
-    temp_inf
-        Ambient temperature around the element.
     x : float
         The position of the integration point.
     temp: float, optional, default=0.0
@@ -160,6 +154,12 @@ class IntegrationPoint:
         The heat transfer coefficient
         (to outside ambient fluid)
         at the integration point.
+    perimeter : float
+        Perimeter of the element.
+    area : float
+        Area of the element.
+    temp_inf
+        Ambient temperature around the element.
 
     Raises
     ------
@@ -177,6 +177,11 @@ class IntegrationPoint:
         If spec_heat_cap < 0.
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
+        If perimeter cannot be converted to float.
+        If perimeter < 0.
+        If area cannot be converted to float.
+        If area < 0.
+        If temp_inf cannot be converted to float.
     """
 
     def __init__(
@@ -192,6 +197,10 @@ class IntegrationPoint:
         thrm_cond: float = 0.0,
         spec_heat_cap: float = 0.0,
         heat_trans_coef: float = 0.0,
+        temp_infinity: float = 0.0,
+        perimeter: float = 0.0,
+        area: float = 0.0,
+
     ):
         x = float(x)
         local_coord = float(local_coord)
@@ -241,7 +250,7 @@ class IntegrationPoint:
             If the value provided is negative
         """
         return self._temp
-    
+
     @property
     def weight(self):
         """The Gauss weights of integration.
@@ -260,10 +269,10 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         if self._weight < 0:
-            raise ValueError ("Gauss weights cannot be negative")
+            raise ValueError("Gauss weights cannot be negative")
         self._weights = float(self._weights)
         return self._weights
-    
+
     @property
     def perimeter(self):
         """The perimeter of the element.
@@ -282,10 +291,10 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         if self._perimeter < 0:
-            raise ValueError ("perimeter cannot be negative")
+            raise ValueError("perimeter cannot be negative")
         self._perimeter = float(self._perimeter)
         return self._perimeter
-    
+
     @property
     def area(self):
         """The area of the element
@@ -304,7 +313,7 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         if self._area < 0:
-            raise ValueError ("area cannot be negative")
+            raise ValueError("area cannot be negative")
         self._area = float(self._area)
         return self._area
 
@@ -326,7 +335,7 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         self._temp_inf = float(self._temp_inf)
-        return self._temp_inf 
+        return self._temp_inf
 
     @property
     def density(self):
@@ -350,10 +359,10 @@ class IntegrationPoint:
     @density.setter
     def density(self, density: float):
         if self._density < 0:
-            raise ValueError ("density cannot be negative")
+            raise ValueError("density cannot be negative")
         density = float(density)
         self._density = density
-    
+
     @property
     def thrm_cond(self):
         """The thermal conductivity of the integration point.
@@ -372,11 +381,11 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         return self._thrm_cond
-    
+
     @thrm_cond.setter
     def thrm_cond(self, thrm_cond: float):
         if self._thrm_cond < 0:
-            raise ValueError ("thermal conductivity cannot be negative")
+            raise ValueError("thermal conductivity cannot be negative")
         thrm_cond = float(thrm_cond)
         self._thrm_cond = thrm_cond
 
@@ -398,13 +407,13 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         return self._spec_heat_cap
-    
+
     @spec_heat_cap.setter
     def spec_heat_cap(self, spec_heat_cap: float):
         if self._spec_heat_cap < 0:
-            raise ValueError ("specific heat capacity cannot be negative")
+            raise ValueError("specific heat capacity cannot be negative")
         spec_heat_cap = float(spec_heat_cap)
-        self._spec_heat_cap = spec_heat_cap    
+        self._spec_heat_cap = spec_heat_cap
 
     @property
     def heat_trans_coef(self):
@@ -424,12 +433,12 @@ class IntegrationPoint:
             If the value provided cannot be converted to float.
         """
         return self._heat_trans_coef
-    
+
     @heat_trans_coef.setter
     def heat_trans_coef(self, heat_trans_coef: float):
         if self._heat_trans_coef < 0:
-            raise ValueError ("heat transfer coefficient cannot be negative")
-        heat_trans_coef = float(heat_trans_coef)        
+            raise ValueError("heat transfer coefficient cannot be negative")
+        heat_trans_coef = float(heat_trans_coef)
         self._heat_trans_coef = heat_trans_coef
 
     @temp.setter
@@ -648,8 +657,8 @@ class Element:
         lam = self.int_pts[0].thrm_cond
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        rho = self.int_pts[0].density
-        return h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]])
+        return (h * (P/A) * self.jacobian * (1/6) * np.array([[2, 1], [1, 2]])
+                + lam * (1/self.jacobian) * np.array([[1, -1], [-1, 1]]))
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
@@ -662,5 +671,5 @@ class Element:
         h = self.int_pts[0].heat_trans_coef
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        T_inf = self.int_pts[0].T_infinity
+        T_inf = self.int_pts[0].temp_infinity
         return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])

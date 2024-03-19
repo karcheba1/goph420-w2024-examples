@@ -109,5 +109,25 @@ class TestElementInvalidInitializers(unittest.TestCase):
             )
 
 
+class TestElementMatricesAndVectors(unittest.TestCase):
+    def setUp(self):
+        self.e = Element(
+            (Node(0, 1.5), Node(1, 2.0), ),
+            order=1,
+        )
+        for ip in self.e.int_pts:
+            ip.thrm_cond = 1.3e6
+            ip.density = 1.5e3
+            ip.spec_heat_cap = 2.5
+            ip.heat_trans_coef = 1.2
+
+    def test_storage_matrix(self):
+        expected = (
+            1.5e3 * 2.5 * 0.5 / 6.0
+            * np.array([[2.0, 1.0], [1.0, 2.0]])
+        )
+        self.assertTrue(np.allclose(expected, self.e.storage_matrix))
+
+
 if __name__ == "__main__":
     unittest.main()
