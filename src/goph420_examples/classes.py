@@ -1,6 +1,10 @@
 import numpy as np
 import numpy.typing as npt
 
+from .interpolation import (
+    shape,
+)
+
 
 class Point:
     _x: float
@@ -174,8 +178,6 @@ class IntegrationPoint:
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
     """
-    _x: float
-    _temp: float
 
     def __init__(
         self,
@@ -184,20 +186,24 @@ class IntegrationPoint:
         density: float = 0.0,
         thrm_cond: float = 0.0,
         spec_heat_cap: float = 0.0,
-        heat_trans_coef: float = 0.0
+        heat_trans_coef: float = 0.0,
     ):
         x = float(x)
+        local_coord = float(local_coord)
+        weight = float(weight)
         self._x = x
+        self._local_coord = local_coord
 
         self.temp = temp
-
+        self.weight = weight
         self.density = density
-
         self.thrm_cond = thrm_cond
-
         self.spec_heat_cap = spec_heat_cap
-
         self.heat_trans_coef = heat_trans_coef
+
+    @property
+    def local_coord(self) -> float:
+        return self._local_coord
 
     @property
     def x(self) -> float:
@@ -225,6 +231,7 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative
         """
         return self._temp
     
@@ -419,9 +426,118 @@ class IntegrationPoint:
         self._heat_trans_coef = heat_trans_coef
 
     @temp.setter
-    def temp(self, temp: float):
+    def temp(self, temp: float) -> None:
         temp = float(temp)
         self._temp = temp
+
+    @property
+    def density(self):
+        """The density of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._density
+
+    @density.setter
+    def density(self, density: float):
+        density = float(density)
+        if density < 0.0:
+            raise ValueError("density cannot be negative")
+        self._density = density
+
+    @property
+    def thrm_cond(self):
+        """The thrm_cond of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._thrm_cond
+
+    @thrm_cond.setter
+    def thrm_cond(self, thrm_cond: float):
+        thrm_cond = float(thrm_cond)
+        if thrm_cond < 0.0:
+            raise ValueError("thrm_cond cannot be negative")
+        self._thrm_cond = thrm_cond
+
+    @property
+    def spec_heat_cap(self):
+        """The spec_heat_cap of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._spec_heat_cap
+
+    @spec_heat_cap.setter
+    def spec_heat_cap(self, spec_heat_cap: float):
+        spec_heat_cap = float(spec_heat_cap)
+        if spec_heat_cap < 0.0:
+            raise ValueError("spec_heat_cap cannot be negative")
+        self._spec_heat_cap = spec_heat_cap
+
+    @property
+    def heat_trans_coef(self):
+        """The heat_trans_coef of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+            If the value provided is negative
+        """
+        return self._heat_trans_coef
+
+    @heat_trans_coef.setter
+    def heat_trans_coef(self, heat_trans_coef: float):
+        heat_trans_coef = float(heat_trans_coef)
+        if heat_trans_coef < 0:
+            raise ValueError(f"Value of heat transfer coefficient {
+                             heat_trans_coef} is negative")
+        self.heat_trans_coef = heat_trans_coef
 
 
 class Element:
@@ -456,7 +572,15 @@ class Element:
     """
     _flux_vector: npt.NDArray[np.floating]
 
+    _int_pt_coords_0 = (
+        0.5,
+    )
+    _int_pt_weights_0 = (
+        1.0,
+    )
+
     def __init__(self, nodes: tuple[Node], order: int):
+        # validate input arguments
         if not isinstance(order, int):
             raise TypeError(f"order is {type(order)}, must be int")
         if order not in [1]:
@@ -466,10 +590,26 @@ class Element:
                 f"provided {len(nodes)} nodes, "
                 + f"should be {order + 1}"
             )
+
         # TODO: check that all objects in nodes
         # are of type Node
+
         self._order = order
         self._nodes = tuple(nodes)
+
+        # TODO: determine number of int pts
+        # based on order
+        int_pt_coords = Element._int_pt_coords_0
+        int_pt_weights = Element._int_pt_weights_0
+
+        # create integration points
+        xe = np.array([nd.x for nd in self.nodes])
+        int_pts = []
+        for s, w in zip(int_pt_coords, int_pt_weights):
+            N = shape(s, self.order)
+            xip = (N @ xe)[0]
+            int_pts.append(IntegrationPoint(local_coord=s, weight=w, x=xip))
+        self._int_pts = tuple(int_pts)
 
     @property
     def order(self) -> int:
@@ -480,36 +620,40 @@ class Element:
         return len(self.nodes)
 
     @property
-    def nodes(self) -> tuple[Node]:
+    def nodes(self) -> tuple[Node, ...]:
         return self._nodes
-        return self._num_nodes
+
+    @property
+    def num_int_pts(self) -> int:
+        return len(self.int_pts)
+
+    @property
+    def int_pts(self) -> tuple[IntegrationPoint, ...]:
+        return self._int_pts
 
     @property
     def jacobian(self) -> float:
-        self._jacobian = self.nodes[1] - self.nodes[0]
-        return self._jacobian
+        return self.nodes[-1].x - self.nodes[0].x
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
-        return self._conduction_matrix
+        h = self.int_pts[0].heat_trans_coef
+        lam = self.int_pts[0].thrm_cond
+        P = 
+        A = 
+        rho = self.int_pts[0].density
+        return h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]])
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
+        rho = self.int_pts[0].density
+        c = self.int_pts[0].spec_heat_cap
         return ((rho*c*self.jacobian/6)*np.array([[2, 1], [1, 2]]))
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
-        self.flux_vector = 0.5 * np.array([[1], [1]])
-        return self._flux_vector
-
-    @property
-    def heat_transfer_coeff(self):
-        pass
-
-    @property
-    def t_infinity(self):
-        pass
-
-    @property
-    def perimeter_area(self):
-        pass
+        h = self.int_pts[0].heat_trans_coef
+        P = 
+        A = 
+        T_inf = 
+        return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
