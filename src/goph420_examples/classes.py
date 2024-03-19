@@ -156,6 +156,17 @@ class Element:
                  + f"should be {order+1}"
                  )
         
+        if not isinstance(order, int):
+            raise TypeError(f"order is {type(order)}, must be int")
+        if order not in [1]:
+            raise ValueError(f"order value {order} invalid")
+        if len(nodes) != order + 1:
+            raise ValueError(
+                f"provided {len(nodes)} nodes, "
+                + f"should be {order + 1}"
+            )
+        # TODO: check that all objects in nodes
+        # are of type Node
         self._order = order
         self._nodes = tuple(nodes)
 
@@ -163,16 +174,23 @@ class Element:
     def order(self) -> int:
         return self._order
 
+        return self._order
+
     @property
     def num_nodes(self) -> int:
+        self._num_nodes = len(self.nodes)
+        return(self._num_nodes)
         return len(self._nodes)
 
     @property
     def nodes(self) -> tuple[Node]:
+        return self._nodes
         return self._num_nodes
 
     @property
     def jacobian(self) -> float:
+        self._jacobian = self.nodes[1] - self.nodes[0]
+        return self._jacobian
         self._jacobian = self._nodes[1] - self._nodes[0]
         return self._jacobian
 
@@ -182,13 +200,14 @@ class Element:
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
+        return ((rho*c*self.jacobian/6)*np.array([[2, 1], [1, 2]]))
         coeff=(rho*cp*self.jacobian)/6
         NtN=np.array([[2,1],[1,2]])
         return coeff @ NtN
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
-        flux_vector = 0.5 * np.array([[1],[1]])
+        flux_vector = 0.5 * np.array([[1], [1]])
         return self._flux_vector
 
     @property
@@ -199,7 +218,6 @@ class Element:
     def t_infinity(self):
         pass
 
-    @property 
+    @property
     def perimeter_area(self):
         pass
-
