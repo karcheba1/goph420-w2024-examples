@@ -187,6 +187,10 @@ class IntegrationPoint:
         thrm_cond: float = 0.0,
         spec_heat_cap: float = 0.0,
         heat_trans_coef: float = 0.0,
+        temp_infinity: float = 0.0,
+        perimeter: float = 0.0,
+        area: float = 0.0,
+
     ):
         x = float(x)
         local_coord = float(local_coord)
