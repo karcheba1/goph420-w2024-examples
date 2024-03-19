@@ -278,8 +278,8 @@ class IntegrationPoint:
     @thrm_cond.setter
     def thrm_cond(self, thrm_cond: float):
         thrm_cond = float(thrm_cond)
-        if thrm_cond < 0:
-            Raises ValueError
+        if thrm_cond < 0.0:
+            raise ValueError("thrm_cond cannot be negative")
         self._thrm_cond = thrm_cond
 
     @property
@@ -305,8 +305,8 @@ class IntegrationPoint:
     @spec_heat_cap.setter
     def spec_heat_cap(self, spec_heat_cap: float):
         spec_heat_cap = float(spec_heat_cap)
-        if spec_heat_cap < 0:
-            Raises ValueError
+        if spec_heat_cap < 0.0:
+            raise ValueError("spec_heat_cap cannot be negative")
         self._spec_heat_cap = spec_heat_cap
 
     @property
@@ -332,8 +332,8 @@ class IntegrationPoint:
     @heat_trans_coef.setter
     def heat_trans_coef(self, heat_trans_coef: float):
         heat_trans_coef = float(heat_trans_coef)
-        if heat_trans_coef < 0:
-            Raises ValueError
+        if heat_trans_coef < 0.0:
+            raise ValueError("heat_trans_coef cannot be negative")
         self._heat_trans_coef = heat_trans_coef
 
 
