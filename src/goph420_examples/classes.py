@@ -182,6 +182,11 @@ class IntegrationPoint:
     def __init__(
         self,
         x: float,
+        weight: float,
+        local_coord: float,
+        area: float,
+        perimeter: float,
+        temp_inf: float,
         temp: float = 0.0,
         density: float = 0.0,
         thrm_cond: float = 0.0,
@@ -193,9 +198,11 @@ class IntegrationPoint:
         weight = float(weight)
         self._x = x
         self._local_coord = local_coord
+        self.area = area
+        self.perimeter = perimeter
+        self.temp_inf = temp_inf
 
         self.temp = temp
-        self.weight = weight
         self.density = density
         self.thrm_cond = thrm_cond
         self.spec_heat_cap = spec_heat_cap
