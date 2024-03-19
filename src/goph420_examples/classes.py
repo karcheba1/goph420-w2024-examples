@@ -265,21 +265,19 @@ class Element:
 
     @property
     def order(self) -> int:
-        self._order = 1
         return self._order
 
     @property
     def num_nodes(self) -> int:
-        self._num_nodes = len(self._nodes)
-        return (self._num_nodes)
+        return len(self.nodes)
 
     @property
     def nodes(self) -> tuple[Node]:
-        pass
+        return self._nodes
 
     @property
     def jacobian(self) -> float:
-        self._jacobian = self._nodes[1] - self._nodes[0]
+        self._jacobian = self.nodes[1] - self.nodes[0]
         return self._jacobian
 
     @property
