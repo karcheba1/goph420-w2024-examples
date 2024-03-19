@@ -249,6 +249,7 @@ class Element:
     _flux_vector: npt.NDArray[np.floating]
 
     def __init__(self, nodes: tuple[Node], order: int):
+        # validate input arguments
         if not isinstance(order, int):
             raise TypeError(f"order is {type(order)}, must be int")
         if order not in [1]:
@@ -258,10 +259,24 @@ class Element:
                 f"provided {len(nodes)} nodes, "
                 + f"should be {order + 1}"
             )
+
         # TODO: check that all objects in nodes
         # are of type Node
+
         self._order = order
         self._nodes = tuple(nodes)
+
+        # TODO: determine number of int pts
+        # based on order
+
+        # create integration points
+        num_int_pts = 1
+        self._int_pts = tuple(
+            IntegrationPoint(
+                local_coord=0.5, weight=1.0,
+                x=0.5*(self.nodes[-1].z + self.nodes[0].z),
+            )
+        )
 
     @property
     def order(self) -> int:
@@ -272,13 +287,20 @@ class Element:
         return len(self.nodes)
 
     @property
-    def nodes(self) -> tuple[Node]:
+    def nodes(self) -> tuple[Node, ...]:
         return self._nodes
 
     @property
+    def num_int_pts(self) -> int:
+        return len(self.int_pts)
+
+    @property
+    def int_pts(self) -> tuple[IntegrationPoint, ...]:
+        return self._int_pts
+
+    @property
     def jacobian(self) -> float:
-        self._jacobian = self.nodes[1] - self.nodes[0]
-        return self._jacobian
+        return self.nodes[-1].x - self.nodes[0].x
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
