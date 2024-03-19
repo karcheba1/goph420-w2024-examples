@@ -655,5 +655,5 @@ class Element:
         h = self.int_pts[0].heat_trans_coef
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        T_inf = self.int_pts[0].T_infinity
+        T_inf = self.int_pts[0].temp_infinity
         return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
