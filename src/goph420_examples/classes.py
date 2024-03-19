@@ -1,6 +1,10 @@
 import numpy as np
 import numpy.typing as npt
 
+from .interpolation import (
+    shape,
+)
+
 
 class Point:
     _x: float
@@ -192,7 +196,7 @@ class IntegrationPoint:
         return self._x
 
     @property
-    def temp(self):
+    def temp(self) -> float:
         """The temperature of the integration point.
 
         Parameters
@@ -212,7 +216,7 @@ class IntegrationPoint:
         return self._temp
 
     @temp.setter
-    def temp(self, temp: float):
+    def temp(self, temp: float) -> None:
         temp = float(temp)
         self._temp = temp
 
@@ -356,6 +360,13 @@ class Element:
     """
     _flux_vector: npt.NDArray[np.floating]
 
+    _int_pt_coords_0 = (
+        0.5,
+    )
+    _int_pt_weights_0 = (
+        1.0,
+    )
+
     def __init__(self, nodes: tuple[Node], order: int):
         # validate input arguments
         if not isinstance(order, int):
@@ -376,15 +387,17 @@ class Element:
 
         # TODO: determine number of int pts
         # based on order
+        int_pt_coords = Element._int_pt_coords_0
+        int_pt_weights = Element._int_pt_weights_0
 
         # create integration points
-        num_int_pts = 1
-        self._int_pts = tuple(
-            IntegrationPoint(
-                local_coord=0.5, weight=1.0,
-                x=0.5*(self.nodes[-1].z + self.nodes[0].z),
-            )
-        )
+        xe = np.array([nd.x for nd in self.nodes])
+        int_pts = []
+        for s, w in zip(int_pt_coords, int_pt_weights):
+            N = shape(s, self.order)
+            xip = (N @ xe)[0]
+            int_pts.append(IntegrationPoint(local_coord=s, weight=w, x=xip))
+        self._int_pts = tuple(int_pts)
 
     @property
     def order(self) -> int:
