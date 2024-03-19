@@ -179,11 +179,19 @@ class IntegrationPoint:
         self,
         x: float,
         temp: float = 0.0,
+        density: float = 0.0,
+        thrm_cond: float = 0.0,
+        spec_heat_cap: float = 0.0,
+        heat_trans_coef: float = 0.0,
     ):
         x = float(x)
         self._x = x
 
         self.temp = temp
+        self.density = density
+        self.thrm_cond = thrm_cond
+        self.spec_heat_cap = spec_heat_cap
+        self.heat_trans_coef = heat_trans_coef
 
     @property
     def x(self) -> float:
