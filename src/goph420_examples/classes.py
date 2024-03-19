@@ -140,12 +140,6 @@ class IntegrationPoint:
         the parent element.
     weight : float
         The weight for Gauss integration within the parent element.
-    perimeter : float
-        Perimeter of the element.
-    area : float
-        Area of the element.
-    temp_inf
-        Ambient temperature around the element.
     x : float
         The position of the integration point.
     temp: float, optional, default=0.0
@@ -160,6 +154,12 @@ class IntegrationPoint:
         The heat transfer coefficient
         (to outside ambient fluid)
         at the integration point.
+    perimeter : float
+        Perimeter of the element.
+    area : float
+        Area of the element.
+    temp_inf
+        Ambient temperature around the element.
 
     Raises
     ------
@@ -177,6 +177,11 @@ class IntegrationPoint:
         If spec_heat_cap < 0.
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
+        If perimeter cannot be converted to float.
+        If perimeter < 0.
+        If area cannot be converted to float.
+        If area < 0.
+        If temp_inf cannot be converted to float.
     """
 
     def __init__(
