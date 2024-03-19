@@ -168,7 +168,7 @@ class Element:
 
     @property
     def num_nodes(self) -> int:
-        self._num_nodes = len(self._nodes)
+        self._num_nodes = len(self.nodes)
         return(self._num_nodes)
 
     @property
@@ -177,7 +177,7 @@ class Element:
 
     @property
     def jacobian(self) -> float:
-        self._jacobian = self._nodes[1] - self._nodes[0]
+        self._jacobian = self.nodes[1] - self.nodes[0]
         return self._jacobian
 
     @property
