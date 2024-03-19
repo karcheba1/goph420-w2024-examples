@@ -113,6 +113,109 @@ class Node:
         self._temp = temp
 
 
+class IntegrationPoint:
+    """Store material property information
+    and interpolated values of solutions variables
+    for integrating element matrices and vectors.
+
+    Attributes
+    ----------
+    local_coord
+    weight
+    x
+    temp
+    density
+    thrm_cond
+    spec_heat_cap
+    heat_trans_coef
+
+    Parameters
+    ----------
+    local_coord : float
+        The local coordinate for Gauss integration within
+        the parent element.
+    weight : float
+        The weight for Gauss integration within the parent element.
+    x : float
+        The position of the integration point.
+    temp: float, optional, default=0.0
+        The temperature at the integration point.
+    density: float, optional, default=0.0
+        The density at the integration point.
+    thrm_cond: float, optional, default=0.0
+        The thermal conductivity at the integration point.
+    spec_heat_cap: float, optional, default=0.0
+        The specific heat capacity at the integration point.
+    heat_trans_coef: float, optional, default=0.0
+        The heat transfer coefficient
+        (to outside ambient fluid)
+        at the integration point.
+
+    Raises
+    ------
+    ValueError
+        If local_coord cannot be converted to float.
+        If weight cannot be converted to float.
+        If weight < 0.
+        If x cannot be converted to float.
+        If temp cannot be converted to float.
+        If density cannot be converted to float.
+        If density < 0.
+        If thrm_cond cannot be converted to float.
+        If thrm_cond < 0.
+        If spec_heat_cap cannot be converted to float.
+        If spec_heat_cap < 0.
+        If heat_trans_coef cannot be converted to float.
+        If heat_trans_coef < 0.
+    """
+    _x: float
+    _temp: float
+
+    def __init__(
+        self,
+        x: float,
+        temp: float = 0.0,
+    ):
+        x = float(x)
+        self._x = x
+
+        self.temp = temp
+
+    @property
+    def x(self) -> float:
+        """The position of the integration point.
+
+        Returns
+        -------
+        float
+        """
+        return self._x
+
+    @property
+    def temp(self):
+        """The temperature of the integration point.
+
+        Parameters
+        ----------
+        float
+
+        Returns
+        -------
+        float
+
+        Raises
+        ------
+        ValueError
+            If the value provided cannot be converted to float.
+        """
+        return self._temp
+
+    @temp.setter
+    def temp(self, temp: float):
+        temp = float(temp)
+        self._temp = temp
+
+
 class Element:
     """Class for grouping Nodes
     and computing element matrices and vectors.
@@ -174,13 +277,9 @@ class Element:
     def order(self) -> int:
         return self._order
 
-        return self._order
-
     @property
     def num_nodes(self) -> int:
-        self._num_nodes = len(self.nodes)
-        return(self._num_nodes)
-        return len(self._nodes)
+        return len(self.nodes)
 
     @property
     def nodes(self) -> tuple[Node]:
