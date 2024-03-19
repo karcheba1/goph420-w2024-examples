@@ -143,8 +143,11 @@ class Element:
         If order < 0.
         If len(nodes) is not consistent with order.
     """
+    _flux_vector: npt.NDArray[np.floating]
 
     def __init__(self, nodes: tuple[Node], order: int):
+        self._order = order
+        self._nodes = tuple(nodes)
         self._order = order
         self._nodes = tuple(nodes)
 
@@ -178,4 +181,18 @@ class Element:
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
+        flux_vector = 0.5 * np.array([[1],[1]])
+        return self._flux_vector
+
+    @property
+    def heat_transfer_coeff(self):
         pass
+
+    @property
+    def t_infinity(self):
+        pass
+
+    @property 
+    def perimeter_area(self):
+        pass
+
