@@ -146,6 +146,17 @@ class Element:
     _flux_vector: npt.NDArray[np.floating]
 
     def __init__(self, nodes: tuple[Node], order: int):
+        if not isinstance(order, int):
+            raise TypeError(f"order is {type(order)}, must be int")
+        if order not in [1]:
+            raise ValueError(f"order value {order} invalid")
+        if len(nodes) != order + 1:
+            raise ValueError(
+                f"provided {len(nodes)} nodes, "
+                + f"should be {order + 1}"
+            )
+        # TODO: check that all objects in nodes
+        # are of type Node
         self._order = order
         self._nodes = tuple(nodes)
 
@@ -172,11 +183,11 @@ class Element:
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
-        return((rho*c*self.jacobian/6)*np.array([[2,1],[1,2]]))
+        return ((rho*c*self.jacobian/6)*np.array([[2, 1], [1, 2]]))
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
-        flux_vector = 0.5 * np.array([[1],[1]])
+        flux_vector = 0.5 * np.array([[1], [1]])
         return self._flux_vector
 
     @property
@@ -187,7 +198,6 @@ class Element:
     def t_infinity(self):
         pass
 
-    @property 
+    @property
     def perimeter_area(self):
         pass
-
