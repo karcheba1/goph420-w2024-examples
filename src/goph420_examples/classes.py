@@ -434,13 +434,23 @@ class Element:
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+        h = self.int_pts[0].heat_trans_coef
+        lam = self.int_pts[0].thrm_cond
+        P = 
+        A = 
+        rho = self.int_pts[0].density
+        return h * (P/A) * self.jacobian * (1/6) * np.array([[2,1],[1,2]]) + lam * (1/self.jacobian) * np.array([[1,-1],[-1,1]])
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
+        rho = self.int_pts[0].density
+        c = self.int_pts[0].spec_heat_cap
         return ((rho*c*self.jacobian/6)*np.array([[2, 1], [1, 2]]))
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
-        flux_vector = 0.5 * np.array([[1], [1]])
-        return self._flux_vector
+        h = self.int_pts[0].heat_trans_coef
+        P = 
+        A = 
+        T_inf = 
+        return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
