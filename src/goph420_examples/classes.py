@@ -162,7 +162,6 @@ class Element:
 
     @property
     def order(self) -> int:
-        self._order = 1
         return self._order
 
 
@@ -173,7 +172,7 @@ class Element:
 
     @property
     def nodes(self) -> tuple[Node]:
-        pass
+        return self._nodes
 
     @property
     def jacobian(self) -> float:
