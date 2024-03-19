@@ -146,8 +146,16 @@ class Element:
     _flux_vector: npt.NDArray[np.floating]
 
     def __init__(self, nodes: tuple[Node], order: int):
-        self._order = order
-        self._nodes = tuple(nodes)
+        if not isinstance (order, int):
+            raise ValueError (f"order value {type(order)}, must be int")
+        if order not in [1]:
+            raise ValueError (f"order value {order} is invalid")        
+        if len(nodes) != order + 1:
+            raise ValueError (
+                f"provided {len(nodes)} nodes, "
+                 + f"should be {order+1}"
+                 )
+        
         self._order = order
         self._nodes = tuple(nodes)
 
@@ -157,12 +165,11 @@ class Element:
 
     @property
     def num_nodes(self) -> int:
-        self._num_nodes = len(self._nodes)
-        return self._num_nodes
+        return len(self._nodes)
 
     @property
     def nodes(self) -> tuple[Node]:
-        pass
+        return self._num_nodes
 
     @property
     def jacobian(self) -> float:
@@ -171,7 +178,7 @@ class Element:
 
     @property
     def conduction_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+        return self._conduction_matrix
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
