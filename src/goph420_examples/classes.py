@@ -132,6 +132,9 @@ class IntegrationPoint:
     thrm_cond
     spec_heat_cap
     heat_trans_coef
+    temp_inf
+    perimeter
+    area
 
     Parameters
     ----------
@@ -140,12 +143,6 @@ class IntegrationPoint:
         the parent element.
     weight : float
         The weight for Gauss integration within the parent element.
-    perimeter : float
-        Perimeter of the element.
-    area : float
-        Area of the element.
-    temp_inf
-        Ambient temperature around the element.
     x : float
         The position of the integration point.
     temp: float, optional, default=0.0
@@ -160,12 +157,12 @@ class IntegrationPoint:
         The heat transfer coefficient
         (to outside ambient fluid)
         at the integration point.
-    perimeter : float
-        Perimeter of the element.
-    area : float
-        Area of the element.
-    temp_inf
+    temp_inf : float, optional, default=0.0
         Ambient temperature around the element.
+    perimeter : float, optional, default=0.0
+        Perimeter of the element.
+    area : float, optional, default=0.0
+        Area of the element.
 
     Raises
     ------
@@ -183,12 +180,23 @@ class IntegrationPoint:
         If spec_heat_cap < 0.
         If heat_trans_coef cannot be converted to float.
         If heat_trans_coef < 0.
+        If temp_inf cannot be converted to float.
         If perimeter cannot be converted to float.
         If perimeter < 0.
         If area cannot be converted to float.
         If area < 0.
-        If temp_inf cannot be converted to float.
     """
+    _local_coord: float
+    _weight: float
+    _x: float
+    _temp: float = 0.0
+    _density: float = 0.0
+    _thrm_cond: float = 0.0
+    _spec_heat_cap: float = 0.0
+    _heat_trans_coef: float = 0.0
+    _temp_inf: float = 0.0
+    _perimeter: float = 0.0
+    _area: float = 0.0
 
     def __init__(
         self,
@@ -200,42 +208,53 @@ class IntegrationPoint:
         thrm_cond: float = 0.0,
         spec_heat_cap: float = 0.0,
         heat_trans_coef: float = 0.0,
+        temp_inf: float = 0.0,
         perimeter: float = 0.0,
         area: float = 0.0,
-        temp_inf: float = 0.0,
-
     ):
+        # data validation on immutable properties
         x = float(x)
         local_coord = float(local_coord)
         weight = float(weight)
         if weight < 0.0:
             raise ValueError("weight cannot be negative")
 
+        # assign immutable properties to private attributes
         self._x = x
         self._local_coord = local_coord
         self._weight = weight
 
+        # use setters to assign public properties
         self.temp = temp
         self.density = density
         self.thrm_cond = thrm_cond
         self.spec_heat_cap = spec_heat_cap
         self.heat_trans_coef = heat_trans_coef
+        self.temp_inf = temp_inf
         self.perimeter = perimeter
         self.area = area
-        self.temp_inf = temp_inf
 
     @property
     def local_coord(self) -> float:
+        """The local coordinate of the integration point
+        within the parent element.
+
+        Returns
+        -------
+        float
+        """
         return self._local_coord
 
     @property
     def weight(self) -> float:
-        return self._weight
+        """The integration weight of the integration point
+        within the parent element.
 
-    @weight.setter
-    def weight(self, weight: float) -> float:
-        weight = float(weight)
-        self._weight = weight
+        Returns
+        -------
+        float
+        """
+        return self._weight
 
     @property
     def x(self) -> float:
@@ -263,34 +282,16 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
-            If the value provided is negative
         """
         return self._temp
 
-    @property
-    def weight(self):
-        """The Gauss weights of integration.
-
-        Parameters
-        ----------
-        float
-
-        Returns
-        -------
-        float
-
-        Raises
-        ------
-        ValueError
-            If the value provided cannot be converted to float.
-        """
-        if self._weight < 0:
-            raise ValueError("Gauss weights cannot be negative")
-        self._weights = float(self._weights)
-        return self._weights
+    @temp.setter
+    def temp(self, value: float) -> None:
+        value = float(value)
+        self._temp = value
 
     @property
-    def perimeter(self):
+    def perimeter(self) -> float:
         """The perimeter of the element.
 
         Parameters
@@ -305,15 +306,20 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative.
         """
-        if self._perimeter < 0:
-            raise ValueError("perimeter cannot be negative")
-        self._perimeter = float(self._perimeter)
         return self._perimeter
+
+    @perimeter.setter
+    def perimeter(self, value: float) -> None:
+        value = float(value)
+        if value < 0.0:
+            raise ValueError(f"value {value} for perimeter cannot be negative")
+        self._perimeter = value
 
     @property
     def area(self):
-        """The area of the element
+        """The area of the element.
 
         Parameters
         ----------
@@ -327,14 +333,19 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative.
         """
-        if self._area < 0:
-            raise ValueError("area cannot be negative")
-        self._area = float(self._area)
         return self._area
 
+    @area.setter
+    def area(self, value: float) -> None:
+        value = float(value)
+        if value < 0.0:
+            raise ValueError(f"value {value} for area cannot be negative")
+        self._area = value
+
     @property
-    def temp_inf(self):
+    def temp_inf(self) -> float:
         """The ambient temperature of the integration point.
 
         Parameters
@@ -350,11 +361,15 @@ class IntegrationPoint:
         ValueError
             If the value provided cannot be converted to float.
         """
-        self._temp_inf = float(self._temp_inf)
         return self._temp_inf
 
+    @temp_inf.setter
+    def temp_inf(self, value: float) -> None:
+        value = float(value)
+        self._temp_inf = value
+
     @property
-    def density(self):
+    def density(self) -> float:
         """The density of the integration point.
 
         Parameters
@@ -369,18 +384,19 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative.
         """
         return self._density
 
     @density.setter
-    def density(self, density: float):
-        if self._density < 0:
+    def density(self, value: float) -> None:
+        value = float(value)
+        if value < 0.0:
             raise ValueError("density cannot be negative")
-        density = float(density)
-        self._density = density
+        self._density = value
 
     @property
-    def thrm_cond(self):
+    def thrm_cond(self) -> float:
         """The thermal conductivity of the integration point.
 
         Parameters
@@ -395,15 +411,16 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative.
         """
         return self._thrm_cond
 
     @thrm_cond.setter
-    def thrm_cond(self, thrm_cond: float):
-        if self._thrm_cond < 0:
+    def thrm_cond(self, value: float) -> None:
+        value = float(value)
+        if value < 0.0:
             raise ValueError("thermal conductivity cannot be negative")
-        thrm_cond = float(thrm_cond)
-        self._thrm_cond = thrm_cond
+        self._thrm_cond = value
 
     @property
     def spec_heat_cap(self):
@@ -421,15 +438,16 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If the value provided is negative.
         """
         return self._spec_heat_cap
 
     @spec_heat_cap.setter
-    def spec_heat_cap(self, spec_heat_cap: float):
-        if self._spec_heat_cap < 0:
+    def spec_heat_cap(self, value: float):
+        value = float(value)
+        if value < 0.0:
             raise ValueError("specific heat capacity cannot be negative")
-        spec_heat_cap = float(spec_heat_cap)
-        self._spec_heat_cap = spec_heat_cap
+        self._spec_heat_cap = value
 
     @property
     def heat_trans_coef(self):
