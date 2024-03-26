@@ -523,11 +523,11 @@ class IntegrationPoint:
         return self._thrm_cond
 
     @thrm_cond.setter
-    def thrm_cond(self, thrm_cond: float):
-        thrm_cond = float(thrm_cond)
-        if thrm_cond < 0.0:
+    def thrm_cond(self, value: float):
+        value = float(value)
+        if value < 0.0:
             raise ValueError("thrm_cond cannot be negative")
-        self._thrm_cond = thrm_cond
+        self._thrm_cond = value
 
 
 class Element:
