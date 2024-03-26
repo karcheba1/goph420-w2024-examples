@@ -140,6 +140,12 @@ class IntegrationPoint:
         the parent element.
     weight : float
         The weight for Gauss integration within the parent element.
+    perimeter : float
+        Perimeter of the element.
+    area : float
+        Area of the element.
+    temp_inf
+        Ambient temperature around the element.
     x : float
         The position of the integration point.
     temp: float, optional, default=0.0
@@ -186,37 +192,50 @@ class IntegrationPoint:
 
     def __init__(
         self,
-        x: float,
-        weight: float,
         local_coord: float,
+        weight: float,
+        x: float,
         temp: float = 0.0,
         density: float = 0.0,
         thrm_cond: float = 0.0,
         spec_heat_cap: float = 0.0,
         heat_trans_coef: float = 0.0,
-        temp_infinity: float = 0.0,
         perimeter: float = 0.0,
         area: float = 0.0,
+        temp_inf: float = 0.0,
 
     ):
         x = float(x)
         local_coord = float(local_coord)
         weight = float(weight)
+        if weight < 0.0:
+            raise ValueError("weight cannot be negative")
+
         self._x = x
         self._local_coord = local_coord
-        self.area = area
-        self.perimeter = perimeter
-        self.temp_inf = temp_infinity
+        self._weight = weight
 
         self.temp = temp
         self.density = density
         self.thrm_cond = thrm_cond
         self.spec_heat_cap = spec_heat_cap
         self.heat_trans_coef = heat_trans_coef
+        self.perimeter = perimeter
+        self.area = area
+        self.temp_inf = temp_inf
 
     @property
     def local_coord(self) -> float:
         return self._local_coord
+
+    @property
+    def weight(self) -> float:
+        return self._weight
+
+    @weight.setter
+    def weight(self, weight: float) -> float:
+        weight = float(weight)
+        self._weight = weight
 
     @property
     def x(self) -> float:
@@ -668,5 +687,5 @@ class Element:
         h = self.int_pts[0].heat_trans_coef
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        T_inf = self.int_pts[0].temp_infinity
+        T_inf = self.int_pts[0].temp_inf
         return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
