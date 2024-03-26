@@ -17,9 +17,9 @@ class Point:
         return self._x
 
     @x.setter
-    def x(self, x: float):
-        x = float(x)
-        self._x = x
+    def x(self, value: float):
+        value = float(value)
+        self._x = value
 
     def length(self):
         return np.sqrt(self.x ** 2)
@@ -112,9 +112,9 @@ class Node:
         return self._temp
 
     @temp.setter
-    def temp(self, temp: float):
-        temp = float(temp)
-        self._temp = temp
+    def temp(self, value: float):
+        value = float(value)
+        self._temp = value
 
 
 class IntegrationPoint:
