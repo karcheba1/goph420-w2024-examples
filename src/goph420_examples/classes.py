@@ -206,7 +206,7 @@ class IntegrationPoint:
         self._local_coord = local_coord
         self.area = area
         self.perimeter = perimeter
-        self.temp_inf = temp_inf
+        self.temp_inf = temp_infinity
 
         self.temp = temp
         self.density = density
@@ -361,7 +361,7 @@ class IntegrationPoint:
         self._density = density
 
     @property
-    def thrm_cond(self):
+    def thrm_cond(self) -> float: 
         """The thermal conductivity of the integration point.
 
         Parameters
