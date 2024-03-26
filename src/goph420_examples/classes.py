@@ -501,11 +501,11 @@ class IntegrationPoint:
         return self._density
 
     @density.setter
-    def density(self, density: float):
-        density = float(density)
-        if density < 0.0:
+    def density(self, value: float):
+        value = float(value)
+        if value < 0.0:
             raise ValueError("density cannot be negative")
-        self._density = density
+        self._density = value
 
     @property
     def thrm_cond(self):
