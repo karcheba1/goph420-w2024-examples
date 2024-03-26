@@ -560,7 +560,9 @@ class Element:
         If order < 0.
         If len(nodes) is not consistent with order.
     """
-    _flux_vector: npt.NDArray[np.floating]
+    _order: int
+    _nodes: tuple[Node, ...]
+    _int_pts: tuple[IntegrationPoint, ...]
 
     _int_pt_coords_0 = (
         0.5,
@@ -580,9 +582,9 @@ class Element:
                 f"provided {len(nodes)} nodes, "
                 + f"should be {order + 1}"
             )
-
-        # TODO: check that all objects in nodes
-        # are of type Node
+        for nd in nodes:
+            if not isinstance(nd, Node):
+                raise TypeError("objects in nodes must be of type Node")
 
         self._order = order
         self._nodes = tuple(nodes)
@@ -631,14 +633,19 @@ class Element:
         lam = self.int_pts[0].thrm_cond
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
-        return (h * (P/A) * self.jacobian * (1/6) * np.array([[2, 1], [1, 2]])
-                + lam * (1/self.jacobian) * np.array([[1, -1], [-1, 1]]))
+        jac = self.jacobian
+        cond_mat = (h * (P / A) * jac / 6.0) * np.array(
+            [[2.0, 1.0], [1.0, 2.0]]
+        )
+        cond_mat += (lam / jac) * np.array([[1.0, -1.0], [-1.0, 1.0]])
+        return cond_mat
 
     @property
     def storage_matrix(self) -> npt.NDArray[np.floating]:
         rho = self.int_pts[0].density
         c = self.int_pts[0].spec_heat_cap
-        return ((rho*c*self.jacobian/6)*np.array([[2, 1], [1, 2]]))
+        jac = self.jacobian
+        return (rho * c * jac / 6.0) * np.array([[2.0, 1.0], [1.0, 2.0]])
 
     @property
     def flux_vector(self) -> npt.NDArray[np.floating]:
@@ -646,4 +653,5 @@ class Element:
         P = self.int_pts[0].perimeter
         A = self.int_pts[0].area
         T_inf = self.int_pts[0].temp_inf
-        return h * (P/A) * self.jacobian * T_inf * 0.5 * np.array([[1], [1]])
+        jac = self.jacobian
+        return h * (P/A) * jac * T_inf * np.array([[0.5], [0.5]])
