@@ -399,10 +399,10 @@ class IntegrationPoint:
         return self._thrm_cond
 
     @thrm_cond.setter
-    def thrm_cond(self, thrm_cond: float):
-        if self._thrm_cond < 0:
-            raise ValueError("thermal conductivity cannot be negative")
+    def thrm_cond(self, thrm_cond: float) -> None:
         thrm_cond = float(thrm_cond)
+        if thrm_cond < 0.0:
+            raise ValueError("thermal conductivity cannot be negative")
         self._thrm_cond = thrm_cond
 
     @property
@@ -421,14 +421,15 @@ class IntegrationPoint:
         ------
         ValueError
             If the value provided cannot be converted to float.
+            If value is negative
         """
         return self._spec_heat_cap
 
     @spec_heat_cap.setter
     def spec_heat_cap(self, spec_heat_cap: float):
-        if self._spec_heat_cap < 0:
-            raise ValueError("specific heat capacity cannot be negative")
         spec_heat_cap = float(spec_heat_cap)
+        if spec_heat_cap < 0.0:
+            raise ValueError("specific heat capacity cannot be negative")
         self._spec_heat_cap = spec_heat_cap
 
     @property
