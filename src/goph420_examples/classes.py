@@ -189,9 +189,6 @@ class IntegrationPoint:
         x: float,
         weight: float,
         local_coord: float,
-        area: float,
-        perimeter: float,
-        temp_inf: float,
         temp: float = 0.0,
         density: float = 0.0,
         thrm_cond: float = 0.0,
@@ -553,7 +550,7 @@ class IntegrationPoint:
         if heat_trans_coef < 0:
             raise ValueError(f"Value of heat transfer coefficient {
                              heat_trans_coef} is negative")
-        self.heat_trans_coef = heat_trans_coef
+        self._heat_trans_coef = heat_trans_coef
 
 
 class Element:
