@@ -443,7 +443,7 @@ class IntegrationPoint:
         return self._spec_heat_cap
 
     @spec_heat_cap.setter
-    def spec_heat_cap(self, value: float):
+    def spec_heat_cap(self, value: float) -> None:
         value = float(value)
         if value < 0.0:
             raise ValueError("specific heat capacity cannot be negative")
@@ -469,65 +469,11 @@ class IntegrationPoint:
         return self._heat_trans_coef
 
     @heat_trans_coef.setter
-    def heat_trans_coef(self, heat_trans_coef: float):
-        if self._heat_trans_coef < 0:
+    def heat_trans_coef(self, value: float) -> None:
+        value = float(value)
+        if value < 0:
             raise ValueError("heat transfer coefficient cannot be negative")
-        heat_trans_coef = float(heat_trans_coef)
-        self._heat_trans_coef = heat_trans_coef
-
-    @property
-    def density(self):
-        """The density of the integration point.
-
-        Parameters
-        ----------
-        float
-
-        Returns
-        -------
-        float
-
-        Raises
-        ------
-        ValueError
-            If the value provided cannot be converted to float.
-            If the value provided is negative
-        """
-        return self._density
-
-    @density.setter
-    def density(self, value: float):
-        value = float(value)
-        if value < 0.0:
-            raise ValueError("density cannot be negative")
-        self._density = value
-
-    @property
-    def thrm_cond(self):
-        """The thrm_cond of the integration point.
-
-        Parameters
-        ----------
-        float
-
-        Returns
-        -------
-        float
-
-        Raises
-        ------
-        ValueError
-            If the value provided cannot be converted to float.
-            If the value provided is negative
-        """
-        return self._thrm_cond
-
-    @thrm_cond.setter
-    def thrm_cond(self, value: float):
-        value = float(value)
-        if value < 0.0:
-            raise ValueError("thrm_cond cannot be negative")
-        self._thrm_cond = value
+        self._heat_trans_coef = value
 
 
 class Element:
