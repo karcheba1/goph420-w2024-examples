@@ -475,11 +475,6 @@ class IntegrationPoint:
         heat_trans_coef = float(heat_trans_coef)
         self._heat_trans_coef = heat_trans_coef
 
-    @temp.setter
-    def temp(self, temp: float) -> None:
-        temp = float(temp)
-        self._temp = temp
-
     @property
     def density(self):
         """The density of the integration point.
