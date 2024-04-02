@@ -600,4 +600,4 @@ class Element:
         A = self.int_pts[0].area
         T_inf = self.int_pts[0].temp_inf
         jac = self.jacobian
-        return h * (P/A) * jac * T_inf * np.array([[0.5], [0.5]])
+        return h * (P/A) * jac * T_inf * np.array([0.5, 0.5])
